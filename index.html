@@ -29,9 +29,18 @@
             transition: background-color 0.3s;
         }
 
-        /* Add a visual indication when the draggable element is over the target */
         .over {
             background-color: lightyellow;
+        }
+
+        #log {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f4f4f4;
+            border: 1px solid #ccc;
+            height: 200px;
+            overflow-y: auto;
+            font-family: Arial, sans-serif;
         }
     </style>
 </head>
@@ -45,49 +54,60 @@
         Drop Here
     </div>
 
+    <!-- Log area to display messages -->
+    <div id="log"></div>
+
     <script>
         // Get the draggable and target divs
         const draggable = document.getElementById("draggable");
         const dropTarget = document.getElementById("dropTarget");
+        const logDiv = document.getElementById("log");
+
+        // Function to log messages to both the console and the log div
+        function logMessage(message) {
+            console.log(message);
+            const logEntry = document.createElement("div");
+            logEntry.textContent = message;
+            logDiv.appendChild(logEntry);
+            logDiv.scrollTop = logDiv.scrollHeight;  // Scroll to the bottom of the log
+        }
 
         // Listen for dragstart event on the draggable div
         draggable.addEventListener("dragstart", (event) => {
-            console.log("Drag started on the draggable div.");
-            // Set data being transferred (optional, here we set just a simple message)
+            logMessage("Drag started on the draggable div.");
             event.dataTransfer.setData("text/plain", "Dragged Element");
         });
 
         // Listen for dragover event on the drop target div
         dropTarget.addEventListener("dragover", (event) => {
-            event.preventDefault(); // Necessary to allow dropping
-            console.log("Dragging over the drop target.");
+            event.preventDefault();
+            logMessage("Dragging over the drop target.");
         });
 
         // Listen for dragenter event on the drop target div
         dropTarget.addEventListener("dragenter", (event) => {
-            console.log("Dragged element entered the drop target area.");
-            dropTarget.classList.add("over"); // Change background color to indicate hovering
+            logMessage("Dragged element entered the drop target area.");
+            dropTarget.classList.add("over");
         });
 
         // Listen for dragleave event on the drop target div
         dropTarget.addEventListener("dragleave", (event) => {
-            console.log("Dragged element left the drop target area.");
-            dropTarget.classList.remove("over"); // Remove hover effect
+            logMessage("Dragged element left the drop target area.");
+            dropTarget.classList.remove("over");
         });
 
         // Listen for drop event on the drop target div
         dropTarget.addEventListener("drop", (event) => {
             event.preventDefault();
-            console.log("Dropped on the target div.");
-            // Optionally, you could retrieve the dragged data here
+            logMessage("Dropped on the target div.");
             const data = event.dataTransfer.getData("text/plain");
-            console.log("Dropped data: " + data);
-            dropTarget.classList.remove("over"); // Remove hover effect when dropped
+            logMessage("Dropped data: " + data);
+            dropTarget.classList.remove("over");
         });
 
         // Optional: Listen for dragend event to reset or log when the drag ends
         draggable.addEventListener("dragend", (event) => {
-            console.log("Drag ended.");
+            logMessage("Drag ended.");
         });
     </script>
     
