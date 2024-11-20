@@ -109,6 +109,11 @@
         draggable.addEventListener("dragend", (event) => {
             logMessage("Drag ended.");
         });
+        
+        // Listen for dragleave event on the draggable div
+        draggable.addEventListener("dragleave", (event) => {
+            logMessage("Dragleave triggered on the draggable element.");
+        });
     </script>
     
 </body>
